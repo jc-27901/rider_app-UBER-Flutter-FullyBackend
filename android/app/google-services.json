@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "668683858541",
+    "project_id": "godrive-rider",
+    "storage_bucket": "godrive-rider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668683858541:android:625e238d1b26b41d610564",
+        "android_client_info": {
+          "package_name": "com.edubyte.riderapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "668683858541-b7s0b2q654kpv7101or6ak68t14dmcnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN3eJEZN3rZbqt66tnWkc7ZPiZbHuZfuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "668683858541-b7s0b2q654kpv7101or6ak68t14dmcnt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
