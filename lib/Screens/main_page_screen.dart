@@ -19,13 +19,13 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
-  late GoogleMapController newGoogleMapController;
+   GoogleMapController newGoogleMapController;
 
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   double bottomPaddingofMap = 0;
 
-  late Position currentPosition;
+   Position currentPosition;
   var geoLoacator = Geolocator();
 
   void locatePosition() async {
@@ -145,7 +145,7 @@ class _MainScreenState extends State<MainScreen> {
             left: 22,
             child: GestureDetector(
               onTap: () {
-                scaffoldKey.currentState!.openDrawer();
+                scaffoldKey.currentState.openDrawer();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -267,9 +267,9 @@ class _MainScreenState extends State<MainScreen> {
                               (Provider.of<AppData>(context).pickUpLocation !=
                                       null
                                   ? Provider.of<AppData>(context)
-                                      .pickUpLocation!
+                                      .pickUpLocation
                                       .placeName
-                                  : 'Add Home')!,
+                                  : 'Add Home'),
                             ),
                             SizedBox(
                               height: 4,

@@ -3,7 +3,7 @@ import 'package:rider_app/Models/address.dart';
 
 class AppData extends ChangeNotifier {
   
-     Address? pickUpLocation;
+     Address pickUpLocation;
 
   void updatePickUpLocationAddress(Address pickUpAddress) {
     pickUpLocation = pickUpAddress;
