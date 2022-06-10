@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rider_app/AllWidgets/Divider.dart';
+import 'package:rider_app/AllWidgets/progressDialog.dart';
 import 'package:rider_app/Assistants/requestAssistant.dart';
 import 'package:rider_app/DataHandler/appData.dart';
+import 'package:rider_app/Models/address.dart';
 import 'package:rider_app/Models/placePredictions.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -79,26 +81,27 @@ class _SearchScreenState extends State<SearchScreen> {
                         width: 18,
                       ),
                       Expanded(
-                          child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: TextField(
-                            controller: pickUptextEditingController,
-                            decoration: InputDecoration(
-                              hintText: 'PickUp Location',
-                              fillColor: Colors.grey[400],
-                              filled: true,
-                              border: InputBorder.none,
-                              isDense: true,
-                              contentPadding:
-                                  EdgeInsets.only(left: 11, top: 8, bottom: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: TextField(
+                              controller: pickUptextEditingController,
+                              decoration: InputDecoration(
+                                hintText: 'PickUp Location',
+                                fillColor: Colors.grey[400],
+                                filled: true,
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.only(
+                                    left: 11, top: 8, bottom: 8),
+                              ),
                             ),
                           ),
                         ),
-                      ))
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -205,7 +208,9 @@ class PredictionTile extends StatelessWidget {
     // ignore: deprecated_member_use
     return FlatButton(
       padding: EdgeInsets.all(0),
-      onLongPress: () {},
+      onPressed: () {
+        getPlaceAddressDetails(placePredictions.place_id, context);
+      },
       child: Container(
         child: Column(
           children: [
@@ -255,8 +260,36 @@ class PredictionTile extends StatelessWidget {
     );
   }
 
-  void getPlaceAddressDetails(String placeId) async {
+//after sleceting destination address we get this address
+  void getPlaceAddressDetails(String placeId, context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            ProgressDialog('Fetching Drop Location....'));
+
     String placeDetailsUrl =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=AIzaSyDC3STsdd7grCda9xS9p_1uRJlNJRYdT2s";
+
+    var res = await RequestAssistant.getRequest(placeDetailsUrl);
+  
+    Navigator.pop(context);
+
+    if (res == 'Failed, to fetch location') {
+      return;
+    }
+    if (res["status"] == "OK") {
+      Address address = Address();
+      address.placeName = res["result"]["name"];
+      address.placeId = placeId;
+      address.latitude = res["result"]["geometry"]["location"]["lat"];
+      address.longitude = res["result"]["geometry"]["location"]["lng"];
+
+      Provider.of<AppData>(context, listen: false)
+          .updateDropOffLocationAddress(address);
+      print('this is drop location:');
+      print(address.placeName);
+
+      Navigator.pop(context, "obtainDirection");
+    }
   }
 }
